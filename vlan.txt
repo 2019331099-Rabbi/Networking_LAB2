@@ -1,0 +1,102 @@
+Create a VLAN:
+-------------------
+enable
+show vlan brief
+config t
+vlan 100
+name administration
+end
+
+Add range of interface  to VLAN 100
+----------------------------------------------------
+show vlan brief
+config t
+int range Fa0/1-2
+switchport access vlan 100
+end
+show vlan brief
+
+
+Add single interface  to VLAN 100
+------------------------------------------------
+show vlan brief
+config t
+int Fa0/3
+switchport access vlan 100
+end
+show vlan brief
+
+Delete interface from one VLAN and add to another VLAN
+-----------------------------------------------------------------------------------
+show vlan brief
+config t
+int range Fa0/2-3
+switchport access vlan 1
+end
+show vlan brief
+
+Delete a VLAN
+---------------------
+**** Before deleting a vlan, all the interface must mode to another existing vlan(native vlan: vlan 1) ****
+config t
+no vlan 100
+end
+show vlan brief
+
+
+
+Change administrative mode
+----------------------------------------
+By default dynamic auto. We have to change it to static access mode
+enable
+show interfaces switchport
+config t
+int range Fa0/1-4
+switchport mode access
+end
+show interfaces switchport
+
+
+Trunking or Tagging
+-----------------------------
+enable
+show interface trunk
+config t
+int Fa0/5
+switchport mode trunk
+end
+show interface trunk
+
+
+Add Router
+------------------
+enable
+config t
+int gig0/0/0
+no shutdown
+
+Trunking between router and switch
+----------------------------------------------------
+enable
+config t
+int Fa0/6
+switchport mode trunk
+end
+show int trunk
+
+
+Assign IP to router: VLAN encapsulation
+-----------------------------------------------------------
+config t
+int gig0/0/0.1
+encapsulation dot1q 10
+ip address 192.168.10.5 255.255.255.0
+exit
+int gig0/0/0.2
+encapsulation dot1q 20
+ip address 192.168.20.5 255.255.255.0
+exit
+
+Check if done correctly
+---------------------------------
+show ip interface brief
